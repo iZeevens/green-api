@@ -1,0 +1,10 @@
+.conatiner {
+  display: flex;
+  gap: 5px;
+}
+
+.input {}
+
+.submitBtn {
+  cursor: pointer;
+}
