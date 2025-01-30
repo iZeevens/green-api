@@ -1,0 +1,11 @@
+.head {
+  display: flex;
+  justify-content: center;
+
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+
+.name {
+  font-weight: 500;
+}

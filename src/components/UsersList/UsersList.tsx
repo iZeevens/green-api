@@ -1,16 +1,26 @@
-import styles from "./UsersList.module.css"
-import SearchUser from "./SearchUser/SearchUser"
+import styles from "./UsersList.module.css";
+import { useState } from "react";
+import SearchUser from "./SearchUser/SearchUser";
 
-function UsersList() {
+interface IUsersListProps {
+  setSelectedUser: (user: string) => void;
+}
+
+function UsersList({ setSelectedUser }: IUsersListProps) {
+  const [users, setUser] = useState<string[]>([]);
+
   return (
     <div className={styles.list}>
       <SearchUser />
-      <span className={styles.listItem}>+7 (700) 289 44 44</span>
-      <span className={styles.listItem}>+7 (700) 289 44 44</span>
-      <span className={styles.listItem}>+7 (700) 289 44 44</span>
-      <span className={styles.listItem}>+7 (700) 289 44 44</span>
+      {users.length > 0
+        ? users.map((user) => (
+            <span className={styles.listItem} onClick={() => setSelectedUser(user)}>
+              {user}
+            </span>
+          ))
+        : ""}
     </div>
-  )
+  );
 }
 
-export default UsersList
+export default UsersList;

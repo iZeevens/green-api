@@ -1,13 +1,13 @@
 import styles from "./ChatHeader.module.css";
 
 interface IChatHeaderProps {
-  userName: string;
+  selectedUser: string;
 }
 
-function ChatHeader({ userName }: IChatHeaderProps) {
+function ChatHeader({ selectedUser }: IChatHeaderProps) {
   return (
-    <header>
-      <span>{userName}</span>
+    <header className={styles.head}>
+      <span className={styles.name}>{selectedUser}</span>
     </header>
   );
 }

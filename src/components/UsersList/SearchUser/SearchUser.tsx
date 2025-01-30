@@ -4,7 +4,7 @@ function SearchUser() {
 
   return (
     <div className={styles.searchContainer}>
-      <input className={styles.searchInput} type="text" placeholder="Username"/>
+      <input className={styles.searchInput} type="text" placeholder="...Search"/>
     </div>
   )
 }
