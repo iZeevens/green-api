@@ -1,4 +1,4 @@
-import styles from "./AuthPage.module.css"
+import styles from "./AuthPage.module.css";
 import { useState } from "react";
 import InputAuth from "../../components/InputAuth/InputAuth";
 import { IAuthData } from "../../types/types";
@@ -10,7 +10,12 @@ function AuthPage() {
   });
   const [error, setError] = useState<string>();
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const {idInstance, apiTokenInstance} = authData
+
+    sessionStorage.setItem("idInstance", idInstance);
+    sessionStorage.setItem("apiTokenInstance", apiTokenInstance);
+  };
 
   return (
     <div className={styles.container}>
@@ -28,7 +33,7 @@ function AuthPage() {
         setValue={setAuthData}
       />
       <div className={styles.submitContainerBtn}>
-        <button className={styles.submitBtn}>Submit</button>
+        <button className={styles.submitBtn} onClick={handleSubmit}>Submit</button>
       </div>
     </div>
   );

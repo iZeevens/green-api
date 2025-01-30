@@ -7,23 +7,32 @@ interface IAddNewUser {
 }
 
 function AddNewUser({ setUser }: IAddNewUser) {
-  const [newUser, setNewUser] = useState<string>('');
-  const [error, setError] = useState<string>('')
+  const [newUser, setNewUser] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleAddNewUser = () => {
-    if (isValidPhoneNumber(newUser)) {
+    if (!error) {
       setUser((prevUsers) => [...prevUsers, newUser]);
-      setError('')
-    } else {
-      setError('Invalid Phone Number')
     }
   };
 
-
   return (
     <div className={styles.container}>
-      <PhoneInput value={newUser} onChange={(value) => setNewUser(value || '')}  />
-      {error ? <span className={styles.error}>{error}</span> : ''}
+      <PhoneInput
+        value={newUser}
+        onChange={(value) => {
+          if (!value) return
+
+          if (!isValidPhoneNumber(value)) {
+            setError("Invalid Phone Number");
+          } else {
+            setError("");
+          }
+
+          setNewUser(value);
+        }}
+      />
+      {error ? <span className={styles.error}>{error}</span> : ""}
       <button className={styles.btnOpen} onClick={handleAddNewUser}>
         Add new User
       </button>
