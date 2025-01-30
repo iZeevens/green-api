@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  
+}
+
+.input {
+  border-radius: 5px;
+  padding: 5px 10px;
+}

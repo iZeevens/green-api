@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  max-width: 460px;
+  min-width: 350px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: auto;
+}
+
+.title {
+  text-align: center;
+  margin: 0 25px;
+}
+
+.submitContainerBtn {
+  display: flex;
+  justify-content: center;
+}
+
+.submitBtn {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  max-width: 160px;
+  width: 100%;
+}
