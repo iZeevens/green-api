@@ -5,6 +5,10 @@
   padding-right: 10px;
 }
 
+.listItems {
+  flex: 1
+}
+
 .listItem {
 
 }
