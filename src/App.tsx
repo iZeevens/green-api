@@ -1,16 +1,16 @@
-import styles from "./App.module.css"
-import AuthPage from "./pages/AuthPage/AuthPage"
-import ChatPage from "./pages/ChatPage/ChatPage"
+import styles from "./App.module.css";
+import useAuth from "./hooks/useAuth";
+import AuthPage from "./pages/AuthPage/AuthPage";
+import ChatPage from "./pages/ChatPage/ChatPage";
 
 function App() {
-
-  
+  const isAuth = useAuth()
 
   return (
     <div className={styles.container}>
-      <ChatPage />
+      {isAuth ? <ChatPage /> : <AuthPage />}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
