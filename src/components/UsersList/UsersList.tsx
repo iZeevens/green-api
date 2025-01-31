@@ -18,6 +18,7 @@ function UsersList({ setSelectedUser }: IUsersListProps) {
               <span
                 className={styles.listItem}
                 onClick={() => setSelectedUser(user)}
+                key={user}
               >
                 {user}
               </span>
