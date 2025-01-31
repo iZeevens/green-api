@@ -1,11 +1,14 @@
 import styles from "./ChatMsgs.module.css";
-import { useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { IMessage } from "../../../types/types";
 
 interface IChatMsgsProps {
   selectedUser: string;
 }
 
 function ChatMsgs({ selectedUser }: IChatMsgsProps) {
+  const [messages, setMessages] = useState<IMessage[]>([])
+
   const handleMsgs = useCallback(async () => {
     const idInstance = localStorage.getItem("idInstance");
     const apiTokenInstance = localStorage.getItem("apiTokenInstance");
@@ -27,7 +30,9 @@ function ChatMsgs({ selectedUser }: IChatMsgsProps) {
         }
       );
 
-      console.log(request);
+      const msgs = await request.json()
+
+      setMessages(msgs)
     }
   }, [selectedUser]);
 
@@ -37,9 +42,12 @@ function ChatMsgs({ selectedUser }: IChatMsgsProps) {
 
   return (
     <div className={styles.container}>
-      <span>3</span>
-      <span>5</span>
-      <span>7</span>
+      {messages.map((item) => (
+        <div key={item.idMessage} className={styles.chatMsg}>
+          <span>{item.textMessage}</span>
+          <span>{new Date(item.timestamp * 1000).toLocaleDateString()}</span>
+        </div>
+      ))}
     </div>
   );
 }
