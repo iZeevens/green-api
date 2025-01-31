@@ -7,14 +7,14 @@ interface IUsersListProps {
 }
 
 function UsersList({ setSelectedUser }: IUsersListProps) {
-  const [users, setUser] = useState<string[]>([]);
+  const [users, setUser] = useState<Set<string>>(new Set());
 
   return (
     <div className={styles.list}>
       <SearchUser />
       <div className={styles.listItems}>
-        {users.length > 0
-          ? users.map((user) => (
+        {users.size > 0
+          ? [...users].map((user) => (
               <span
                 className={styles.listItem}
                 onClick={() => setSelectedUser(user)}

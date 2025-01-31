@@ -3,7 +3,7 @@ import { useState } from "react";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input/input";
 
 interface IAddNewUser {
-  setUser: React.Dispatch<React.SetStateAction<string[]>>;
+  setUser: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 
 function AddNewUser({ setUser }: IAddNewUser) {
@@ -12,7 +12,7 @@ function AddNewUser({ setUser }: IAddNewUser) {
 
   const handleAddNewUser = () => {
     if (!error) {
-      setUser((prevUsers) => [...prevUsers, newUser]);
+      setUser((prevUsers) => new Set(prevUsers).add(newUser));
     }
   };
 
