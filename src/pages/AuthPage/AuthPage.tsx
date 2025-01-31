@@ -13,8 +13,8 @@ function AuthPage() {
   const handleSubmit = () => {
     const {idInstance, apiTokenInstance} = authData
 
-    sessionStorage.setItem("idInstance", idInstance);
-    sessionStorage.setItem("apiTokenInstance", apiTokenInstance);
+    localStorage.setItem("idInstance", idInstance);
+    localStorage.setItem("apiTokenInstance", apiTokenInstance);
   };
 
   return (
