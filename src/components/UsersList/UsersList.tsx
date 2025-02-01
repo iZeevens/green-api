@@ -7,14 +7,24 @@ interface IUsersListProps {
 }
 
 function UsersList({ setSelectedUser }: IUsersListProps) {
-  const [users, setUser] = useState<Set<string>>(new Set());
+  const [users, setUsers] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const filteredUsers =
+    searchQuery.length > 0
+      ? [...users].filter((user) =>
+          user.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : [...users];
+
+  console.log(filteredUsers);
 
   return (
     <div className={styles.list}>
-      <SearchUser />
+      <SearchUser search={searchQuery} setSearch={setSearchQuery} />
       <div className={styles.listItems}>
-        {users.size > 0
-          ? [...users].map((user) => (
+        {filteredUsers.length > 0
+          ? filteredUsers.map((user) => (
               <span
                 className={styles.listItem}
                 onClick={() => setSelectedUser(user)}
@@ -23,9 +33,9 @@ function UsersList({ setSelectedUser }: IUsersListProps) {
                 {user}
               </span>
             ))
-          : ""}
+          : "No users found"}
       </div>
-      <AddNewUser setUser={setUser} />
+      <AddNewUser setUsers={setUsers} />
     </div>
   );
 }
