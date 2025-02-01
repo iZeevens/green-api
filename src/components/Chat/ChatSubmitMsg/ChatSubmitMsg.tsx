@@ -1,5 +1,6 @@
 import styles from "./ChatSubmitMsg.module.css";
 import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
 
 interface IChatSubmitMsgProps {
   selectedUser: string;
@@ -7,18 +8,17 @@ interface IChatSubmitMsgProps {
 
 function ChatSubmitMsg({ selectedUser }: IChatSubmitMsgProps) {
   const [message, setMessage] = useState<string>("");
+  const { authConfig } = useAuth();
+  const { idInstance, apiTokenInstance, apiUrl } = authConfig;
 
   const setNewMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
   const handleSendMessage = async () => {
-    const idInstance = localStorage.getItem("idInstance");
-    const apiTokenInstance = localStorage.getItem("apiTokenInstance");
+    setMessage("");
 
-    const apiUrl = `https://${idInstance?.slice(0, 4)}.api.greenapi.com`;
-
-    const request = await fetch(
+    await fetch(
       `${apiUrl}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
       {
         method: "POST",
@@ -40,6 +40,7 @@ function ChatSubmitMsg({ selectedUser }: IChatSubmitMsgProps) {
         type="text"
         value={message}
         onChange={(e) => setNewMessage(e)}
+        onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
       />
       <button className={styles.submitBtn} onClick={handleSendMessage}>
         Send

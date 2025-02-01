@@ -3,18 +3,22 @@ import { useState } from "react";
 import InputAuth from "../../components/InputAuth/InputAuth";
 import { IAuthData } from "../../types/types";
 
-function AuthPage() {
+interface IAuthPageProps {
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function AuthPage({ setIsAuth }: IAuthPageProps) {
   const [authData, setAuthData] = useState<IAuthData>({
     idInstance: "",
     apiTokenInstance: "",
   });
-  const [error, setError] = useState<string>();
 
   const handleSubmit = () => {
-    const {idInstance, apiTokenInstance} = authData
+    const { idInstance, apiTokenInstance } = authData;
 
     localStorage.setItem("idInstance", idInstance);
     localStorage.setItem("apiTokenInstance", apiTokenInstance);
+    setIsAuth(true)
   };
 
   return (
@@ -33,7 +37,9 @@ function AuthPage() {
         setValue={setAuthData}
       />
       <div className={styles.submitContainerBtn}>
-        <button className={styles.submitBtn} onClick={handleSubmit}>Submit</button>
+        <button className={styles.submitBtn} onClick={handleSubmit}>
+          Submit
+        </button>
       </div>
     </div>
   );

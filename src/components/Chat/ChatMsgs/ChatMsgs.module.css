@@ -1,7 +1,10 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
   flex: 1;
   padding: 10px;
-  max-height: 85dvh;
   overflow: scroll;
 }
 
@@ -9,6 +12,15 @@
   display: flex;
   justify-content: space-between;
   border: 1px solid black;
-  margin-bottom: 5px;
   padding: 5px;
+}
+
+.incoming {
+  align-self: flex-start;
+
+}
+
+.outcoming {
+  align-self: flex-end;
+
 }

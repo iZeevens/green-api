@@ -1,5 +1,6 @@
 import styles from "./ChatMsgs.module.css";
 import { useState, useCallback, useEffect } from "react";
+import useAuth from "../../../hooks/useAuth";
 import { IMessage } from "../../../types/types";
 
 interface IChatMsgsProps {
@@ -7,47 +8,56 @@ interface IChatMsgsProps {
 }
 
 function ChatMsgs({ selectedUser }: IChatMsgsProps) {
-  const [messages, setMessages] = useState<IMessage[]>([])
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const { authConfig } = useAuth();
+  const { idInstance, apiTokenInstance, apiUrl } = authConfig;
 
-  const handleMsgs = useCallback(async () => {
-    const idInstance = localStorage.getItem("idInstance");
-    const apiTokenInstance = localStorage.getItem("apiTokenInstance");
+  const fetchMessages = useCallback(async () => {
+    if (!selectedUser) return;
 
-    const apiUrl = `https://${idInstance?.slice(0, 4)}.api.greenapi.com`;
+    const request = await fetch(
+      `${apiUrl}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chatId: `${selectedUser.slice(1)}@c.us`,
+          count: 10,
+        }),
+      }
+    );
 
-    if (selectedUser) {
-      const request = await fetch(
-        `${apiUrl}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            chatId: `${selectedUser.slice(1)}@c.us`,
-            count: 100
-          }),
-        }
-      );
+    const msgs = await request.json();
 
-      const msgs = await request.json()
-
-      setMessages(msgs)
-    }
-  }, [selectedUser]);
+    setMessages(msgs.reverse());
+  }, [selectedUser, apiTokenInstance, apiUrl, idInstance]);
 
   useEffect(() => {
-    handleMsgs();
-  }, [selectedUser ,handleMsgs]);
+    fetchMessages();
+
+    const interval = setInterval(fetchMessages, 5000);
+
+    return () => clearInterval(interval);
+  }, [selectedUser, fetchMessages]);
 
   return (
     <div className={styles.container}>
-      {messages.map((item) => (
-        <div key={item.idMessage} className={styles.chatMsg}>
-          <span>{item.textMessage}</span>
-          <span>{new Date(item.timestamp * 1000).toLocaleDateString()}</span>
-        </div>
-      ))}
+      {messages.map((item) =>
+        item.textMessage ? (
+          <div
+            key={item.idMessage}
+            className={`${styles.chatMsg} ${
+              item.type === "incoming" ? styles.incoming : styles.outcoming
+            }`}
+          >
+            <span>{item.textMessage}</span>
+          </div>
+        ) : (
+          ""
+        )
+      )}
     </div>
   );
 }
