@@ -17,8 +17,6 @@ function UsersList({ setSelectedUser }: IUsersListProps) {
         )
       : [...users];
 
-  console.log(filteredUsers);
-
   return (
     <div className={styles.list}>
       <SearchUser search={searchQuery} setSearch={setSearchQuery} />
