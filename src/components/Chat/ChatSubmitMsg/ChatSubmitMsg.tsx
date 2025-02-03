@@ -1,6 +1,6 @@
 import styles from "./ChatSubmitMsg.module.css";
 import { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
+import useAuthInfo from "../../../hooks/useAuthInfo";
 
 interface IChatSubmitMsgProps {
   selectedUser: string;
@@ -8,7 +8,7 @@ interface IChatSubmitMsgProps {
 
 function ChatSubmitMsg({ selectedUser }: IChatSubmitMsgProps) {
   const [message, setMessage] = useState<string>("");
-  const { authConfig } = useAuth();
+  const { authConfig } = useAuthInfo();
   const { idInstance, apiTokenInstance, apiUrl } = authConfig;
 
   const setNewMessage = (e: React.ChangeEvent<HTMLInputElement>) => {

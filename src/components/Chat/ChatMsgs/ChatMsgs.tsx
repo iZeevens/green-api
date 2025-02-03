@@ -1,6 +1,6 @@
 import styles from "./ChatMsgs.module.css";
 import { useState, useCallback, useEffect } from "react";
-import useAuth from "../../../hooks/useAuth";
+import useAuthInfo from "../../../hooks/useAuthInfo";
 import { IMessage } from "../../../types/types";
 
 interface IChatMsgsProps {
@@ -9,29 +9,36 @@ interface IChatMsgsProps {
 
 function ChatMsgs({ selectedUser }: IChatMsgsProps) {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const { authConfig } = useAuth();
+  const [error, setError] = useState<string>("");
+  const { authConfig } = useAuthInfo();
   const { idInstance, apiTokenInstance, apiUrl } = authConfig;
 
   const fetchMessages = useCallback(async () => {
     if (!selectedUser) return;
 
-    const request = await fetch(
-      `${apiUrl}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chatId: `${selectedUser.slice(1)}@c.us`,
-          count: 10,
-        }),
+    try {
+      const request = await fetch(
+        `${apiUrl}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chatId: `${selectedUser.slice(1)}@c.us`,
+            count: 10,
+          }),
+        }
+      );
+
+      const msgs = await request.json();
+
+      setMessages(msgs.reverse());
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(`Error: ${error.message}`);
       }
-    );
-
-    const msgs = await request.json();
-
-    setMessages(msgs.reverse());
+    }
   }, [selectedUser, apiTokenInstance, apiUrl, idInstance]);
 
   useEffect(() => {
@@ -44,18 +51,22 @@ function ChatMsgs({ selectedUser }: IChatMsgsProps) {
 
   return (
     <div className={styles.container}>
-      {messages.map((item) =>
-        item.textMessage ? (
-          <div
-            key={item.idMessage}
-            className={`${styles.chatMsg} ${
-              item.type === "incoming" ? styles.incoming : styles.outcoming
-            }`}
-          >
-            <span>{item.textMessage}</span>
-          </div>
-        ) : (
-          ""
+      {error ? (
+        <span className={styles.error}>{error}</span>
+      ) : (
+        messages.map((item) =>
+          item.textMessage ? (
+            <div
+              key={item.idMessage}
+              className={`${styles.chatMsg} ${
+                item.type === "incoming" ? styles.incoming : styles.outcoming
+              }`}
+            >
+              <span>{item.textMessage}</span>
+            </div>
+          ) : (
+            ""
+          )
         )
       )}
     </div>

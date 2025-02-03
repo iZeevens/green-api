@@ -17,10 +17,12 @@
 
 .incoming {
   align-self: flex-start;
-
 }
 
 .outcoming {
   align-self: flex-end;
+}
 
+.error {
+  color: red
 }

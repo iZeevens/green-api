@@ -1,24 +1,22 @@
 import styles from "./AuthPage.module.css";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import InputAuth from "../../components/InputAuth/InputAuth";
 import { IAuthData } from "../../types/types";
 
-interface IAuthPageProps {
-  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function AuthPage({ setIsAuth }: IAuthPageProps) {
+function AuthPage() {
   const [authData, setAuthData] = useState<IAuthData>({
     idInstance: "",
     apiTokenInstance: "",
   });
+  const { setIsAuth } = useAuth();
 
   const handleSubmit = () => {
     const { idInstance, apiTokenInstance } = authData;
 
     localStorage.setItem("idInstance", idInstance);
     localStorage.setItem("apiTokenInstance", apiTokenInstance);
-    setIsAuth(true)
+    setIsAuth(true);
   };
 
   return (
