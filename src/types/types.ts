@@ -4,15 +4,35 @@ interface IAuthData {
 }
 
 interface IMessage {
-  type: 'outgoing' | 'incoming',
-  idMessage: string,
-  timestamp: number,
-  textMessage: string,
-  extendedTextMessage: {
-    text?: string,
-    description: string,
-    title: string
-  }
+  type: "outgoing" | "incoming";
+  idMessage: string;
+  timestamp: number;
+  textMessage: string;
+  extendedTextMessage?: {
+    text?: string;
+    description: string;
+    title: string;
+  };
 }
 
-export type { IAuthData, IMessage };
+interface INotification {
+  idMessage: string;
+  messageData: {
+    typeMessage: "textMessage";
+    textMessageData: {
+      textMessage: string;
+    };
+    extendedTextMessageData: {
+      text: string;
+    };
+  };
+  timestamp: number;
+
+  senderData: {
+    chatId: string;
+    chatName: string;
+    sender: string;
+  };
+}
+
+export type { IAuthData, IMessage, INotification };

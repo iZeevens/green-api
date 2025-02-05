@@ -11,9 +11,9 @@ function AddNewUser({ setUsers }: IAddNewUser) {
   const [error, setError] = useState<string>("");
 
   const handleAddNewUser = () => {
-    if (!error) {
-      setUsers((prevUsers) => new Set(prevUsers).add(newUser));
-    }
+    if (error || !newUser) return 
+
+    setUsers((prevUsers) => new Set(prevUsers).add(newUser));
   };
 
   return (

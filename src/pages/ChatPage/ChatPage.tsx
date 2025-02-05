@@ -1,7 +1,7 @@
 import styles from "./ChatPage.module.css";
 import { useState } from "react";
 import UsersList from "../../components/UsersList/UsersList";
-import Chat from "../../components/Chat/Chat";
+import ChatContainer from "../../components/Chat/ChatContainer/ChatContainer";
 
 function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<string>('');
@@ -9,7 +9,7 @@ function ChatPage() {
   return (
     <div className={styles.container}>
       <UsersList setSelectedUser={setSelectedUser} />
-      <Chat selectedUser={selectedUser} />
+      <ChatContainer selectedUser={selectedUser} />
     </div>
   );
 }

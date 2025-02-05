@@ -1,36 +1,21 @@
 import styles from "./ChatSubmitMsg.module.css";
 import { useState } from "react";
-import useAuthInfo from "../../../hooks/useAuthInfo";
 
 interface IChatSubmitMsgProps {
-  selectedUser: string;
+  onSendMessage: (message: string) => void;
 }
 
-function ChatSubmitMsg({ selectedUser }: IChatSubmitMsgProps) {
-  const [message, setMessage] = useState<string>("");
-  const { authConfig } = useAuthInfo();
-  const { idInstance, apiTokenInstance, apiUrl } = authConfig;
+function ChatSubmitMsg({ onSendMessage }: IChatSubmitMsgProps) {
+  const [input, setInput] = useState<string>("");
 
-  const setNewMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
   };
 
-  const handleSendMessage = async () => {
-    setMessage("");
-
-    await fetch(
-      `${apiUrl}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chatId: `${selectedUser.slice(1)}@c.us`,
-          message,
-        }),
-      }
-    );
+  const handleSend = () => {
+    if (!input.trim()) return;
+    onSendMessage(input);
+    setInput("");
   };
 
   return (
@@ -38,11 +23,11 @@ function ChatSubmitMsg({ selectedUser }: IChatSubmitMsgProps) {
       <input
         className={styles.input}
         type="text"
-        value={message}
-        onChange={(e) => setNewMessage(e)}
-        onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+        value={input}
+        onChange={(e) => handleInputChange(e)}
+        onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
-      <button className={styles.submitBtn} onClick={handleSendMessage}>
+      <button className={styles.submitBtn} onClick={handleSend}>
         Send
       </button>
     </div>
