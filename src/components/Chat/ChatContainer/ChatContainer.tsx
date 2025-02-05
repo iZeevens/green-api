@@ -55,12 +55,20 @@ function ChatContainer({ selectedUser }: IChatContainerProps) {
         if (data && data.body) {
           const notification = data.body as INotification;
 
-          if (
-            selectedUser ===
-            "+" + notification.senderData.sender.slice(0, -5)
-          ) {
+          const senderId = notification.senderData?.sender;
+          const formattedSender = senderId
+            ? `+${senderId.slice(0, -5)}`
+            : undefined;
 
-            const msg = notification.messageData.textMessageData.textMessage || notification.messageData.extendedTextMessageData.text
+          if (
+            formattedSender &&
+            selectedUser === formattedSender &&
+            notification?.messageData &&
+            !notification.typeWebhook.includes("outgoing")
+          ) {
+            const msg =
+              notification.messageData?.textMessageData?.textMessage ||
+              notification.messageData?.extendedTextMessageData?.text;
             const newMessage: IMessage = {
               idMessage: Date.now().toString(),
               textMessage: msg,
@@ -91,12 +99,14 @@ function ChatContainer({ selectedUser }: IChatContainerProps) {
 
   const handleSendMessage = async (message: string) => {
     if (!message.trim()) return;
+
     const newMessage: IMessage = {
       idMessage: Date.now().toString(),
       textMessage: message,
       type: "outgoing",
       timestamp: Date.now(),
     };
+    
     setMessages((prev) => [...prev, newMessage]);
 
     try {

@@ -16,6 +16,7 @@ interface IMessage {
 }
 
 interface INotification {
+  typeWebhook: string;
   idMessage: string;
   messageData: {
     typeMessage: "textMessage";
