@@ -13,7 +13,7 @@ function useAuthInfo() {
     const apiTokenInstance = localStorage.getItem("apiTokenInstance");
     const isAuth = Boolean(idInstance && apiTokenInstance);
     const apiUrl = idInstance
-      ? `https://${idInstance.slice(0, 4)}.api.greenapi.com`
+      ? `https://api.green-api.com`
       : null;
     return { isAuth, idInstance, apiTokenInstance, apiUrl };
   });
@@ -24,7 +24,7 @@ function useAuthInfo() {
       const apiTokenInstance = localStorage.getItem("apiTokenInstance");
       const isAuth = Boolean(idInstance && apiTokenInstance);
       const apiUrl = idInstance
-        ? `https://${idInstance.slice(0, 4)}.api.greenapi.com`
+        ? `https://api.green-api.com`
         : null;
       setAuthConfig({ isAuth, idInstance, apiTokenInstance, apiUrl });
     };
